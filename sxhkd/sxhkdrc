@@ -1,0 +1,187 @@
+## wm independent hotkeys ===============================
+
+# make sxhkd reload its configuration files:
+super + Escape
+    pkill -USR1 -x sxhkd
+ 
+## bspwm hotkeys ========================================
+ 
+# quit/restart bspwm
+super + alt + {q,r}
+    bspc {quit,wm -r}
+ 
+# close and kill
+super + q
+    bspc node -c
+super + m
+    bspc desktop -l next
+ 
+# alternate between the tiled and monocle layout
+super + m
+    bspc desktop -l next
+ 
+# send the newest marked node to the newest preselected node
+super + y
+    bspc node newest.marked.local -n newest.!automatic.local
+ 
+# swap the current node and the biggest node
+super + shift + g
+    bspc node -s biggest
+
+# Flip layout vertically/horizontally
+super + {_,shift + }a
+    bspc node @/ --flip {vertical,horizontal}
+ 
+## state/flags ===========================================
+
+super + t
+    bspc node -t tiled
+# set the window state
+super + g
+    bspc node -t floating
+# set the window state
+super + f
+    bspc node -t fullscreen
+ 
+# set the node flags
+super + ctrl + {m,x,y,z}
+    bspc node -g {marked,locked,sticky,private}
+ 
+## focus/swap ============================================
+ 
+super + {_,shift + }{Left,Down,Up,Right}
+    bspc node -{f,s} {west,south,north,east}
+ 
+# focus the node for the given path jump
+super + {p,space,comma,period}
+    bspc node -f @{parent,brother,first,second}
+ 
+# focus the next/previous node in the current desktop
+super + {_,shift + }c
+    bspc node -f {next,prev}.local
+ 
+# focus the next/previous desktop in the current monitor
+super + bracket{left,right}
+    bspc desktop -f {prev,next}.local
+ 
+# focus the last node/desktop
+super + {grave,Tab}
+    bspc {node,desktop} -f last
+ 
+# focus the older or newer node in the focus history
+super + {o,i}
+    bspc wm -h off; \
+    bspc node {older,newer} -f; \
+    bspc wm -h on
+ 
+# focus or send to the given desktop
+super + {_,shift + }{1-9,0}
+    bspc {desktop -f,node -d} '^{1-9,10}'
+ 
+## preselect ==========================================
+ 
+# preselect the direction
+super + ctrl + alt + {Left,Down,Up,Right}
+    bspc node -p {west,south,north,east}
+ 
+# preselect the ratio
+super + ctrl + {1-9}
+    bspc node -o 0.{1-9}
+ 
+# cancel the preselection for the focused node
+super + ctrl + space
+    bspc node -p cancel
+ 
+# cancel the preselection for the focused desktop
+super + ctrl + alt + space
+    bspc query -N -d | xargs -I id -n 1 bspc node id -p cancel
+ 
+## move/resize =============================================
+
+# move a floating window
+super + ctrl + {Left,Down,Up,Right}
+    bspc node -v {-20 0,0 20,0 -20,20 0}
+ 
+# Custom move/resize
+alt + super + {Left,Down,Up,Right}
+    ~/.config/bspwm/scripts/bspwm_resize {west,south,north,east}
+
+## launching programs ========================================= 
+
+#Launch Firefox
+super + shift + f
+	firejail /opt/firefox/firefox
+
+#Launch Brave
+super + shift + b
+        brave-browser
+
+#File Explorer(Thunar)
+super + e
+	thunar
+super + shift + e
+	sudo thunar
+
+#LockScreen
+super + shift + z
+    betterlockscreen -l dim
+
+#RedShift
+super + l
+    redshift -O 2400
+super + shift + l
+    redshift -x
+
+#Screenshots
+#super + s
+#    scrot ~/Screenshots/captura.jpg
+#super + shift + s
+#    scrot -s ~/Screenshots/captura.png
+
+Print
+    flameshot screen -p ~/Screenshots 
+
+shift + Print
+    flameshot screen -c
+
+super + Print
+    flameshot gui
+
+# terminal emulator
+super + Return
+    alacritty
+
+## Rofi launchers ===========================================
+
+# run launcher
+super + b 
+    rofi -show drun
+
+# window switcher
+super + w
+    rofi -show window
+
+# powermenu
+super + x
+    ~/.config/rofi/powermenu.sh
+
+# clipboard
+super + v
+    rofi -modi "clipboard:greenclip print" -show clipboard -run-command '{cmd}'
+
+# calculator
+super + c 
+    rofi -show calc -modi calc -no-show-match -no-sort
+
+## system controls ==========================================
+
+# volume Controls
+shift + {Up, Down}
+    {pamixer -i 5, pamixer -d 5};\
+    ~/.config/dunst/scripts/volume.sh 
+
+# brightness controls
+shift + {Right, Left}
+    {brightnessctl set +5%, brightnessctl set 5%-};\
+    ~/.config/dunst/scripts/brightness.sh screen
+
