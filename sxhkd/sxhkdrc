@@ -180,8 +180,35 @@ shift + {Up, Down}
     {pamixer -i 5, pamixer -d 5};\
     ~/.config/dunst/scripts/volume.sh 
 
+super + {F2,F3}
+	pactl set-sink-volume 0 {-5%, +5%};\
+    ~/.config/dunst/scripts/volume.sh 
+
+super + {F1}
+	pactl set-sink-mute 0 toggle
+
+{XF86AudioRaiseVolume,XF86AudioLowerVolume}
+	{pamixer -i 5, pamixer -d 5};\
+    ~/.config/dunst/scripts/volume.sh 
+
+{XF86AudioMute}
+	pactl set-sink-mute 0 toggle
+    #~/.config/dunst/scripts/volume.sh
+
 # brightness controls
 shift + {Right, Left}
     {brightnessctl set +5%, brightnessctl set 5%-};\
     ~/.config/dunst/scripts/brightness.sh screen
+
+shift + {XF86MonBrightnessUp, XF86MonBrightnessDown}
+    {brightnessctl set +5%, brightnessctl set 5%-};\
+    ~/.config/dunst/scripts/brightness.sh screen
+
+#Controles Multimedia
+
+super + {F6,F7,F8}
+	playerctl {previous,play-pause,next}
+	
+{XF86AudioStop,XF86AudioPlay,XF86AudioPrev,XF86AudioNext}
+	playerctl {stop,play-pause,previous,next}
 
